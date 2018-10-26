@@ -103,14 +103,14 @@ function heapsort(data) {
 }
 
 function quicksort() {
-    quicksortin(csvData, "random", 0, csvData.length -1);
+    partion(csvData, "random", 0, csvData.length -1);
 }
 
 function quicksortin(aa, pivot_type, left, right) {
     if (typeof (left) === "undefined") left = 0;
-    if (typeof (right) === "undefined") right = aa.length -1;
+    if (typeof (right) === "undefined") right = aa.length -1;   
 
-    if (left >= right) return;
+   // if (left >= right) return;
 
     let pivot = partition(aa, pivot_type, left, right);
     quicksortin(aa, pivot_type, left, pivot - 1);
@@ -119,23 +119,53 @@ function quicksortin(aa, pivot_type, left, right) {
 
 function partition(aa, pivot_type, left, right) {
     let pivot = choose_pivot(aa, pivot_type, left, right);
-    // pour plus de simplicité on place le pivot en fin et quand le tri 
-    // est fini on le remet à sa place avec le swap(right, pivot)
-    swap(pivot, right);
-   
-    pivot = left;
-    for (let i = left; i < right; i++) {
-        if (isLess(i, right)) {
-            if (i !== pivot) {
-                swap(i, pivot)
-            }
-            pivot += 1;
+
+    for(let i = left; i < pivot; i++) {
+    //  pivot = right
+        if (isLess(i, pivot)) {
+            left++;
+        } else {
+            aa.splice(aa.length - 1, 0, aa[i]);
+            aa.splice(left, 1);
         }
     }
-    swap(right, pivot);
 
-    return pivot;
+    for (let j = right; j > pivot; j--){
+    // pivot = left
+        if (isLess(j, pivot)) {
+            aa.splice(pivot - 1, 0, aa[j]);
+            right++;
+            aa.splice(right, 1);
+            right--;
+
+        } else {
+            right--;
+        }
+    }  
+
+    console.log(aa);
+
 }
+
+
+    /*correction*/
+    // pour plus de simplicité on place le pivot en fin et quand le tri 
+    // est fini on le remet à sa place avec le swap(right, pivot)
+    // swap(pivot, right);
+   
+    // pivot = left;
+    // for (let i = left; i < right; i++) {
+    //     if (isLess(i, right)) {
+    //         if (i !== pivot) {
+    //             swap(i, pivot)
+    //         }
+    //         pivot += 1;
+    //     }
+    // }
+    // swap(right, pivot);
+
+    // return pivot;
+
 
 function choose_pivot(aa, pivot_type, left, right) {
     if (typeof (left) === "undefined") left = 0;
@@ -152,11 +182,16 @@ function choose_pivot(aa, pivot_type, left, right) {
     } else if (pivot_type === "middle"){
         pivot = Math.round((left + right)/2);
     } else if (pivot_type === "median"){
-        // TODO
+       //TODO
     } else {
         throw 'invalid pivot_type' + pivot_type;
     }
+    console.log(pivot)
     return pivot;
+}
+
+function median(aa){
+    
 }
 
 function quick3sort(data) {
