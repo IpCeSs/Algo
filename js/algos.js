@@ -106,16 +106,21 @@ function quicksort() {
     let pivot = 8;
     let T1 = [];
     let T2 = [];
-    let TFinal = [];
 
     for (let i = 0; i < csvData.length; i++) {
         if (isLess(i, pivot)) {
            
             T1[i] = csvData[i];
+            if (isLess( i, i+1)) {
+                swap(i, i+1)
+            }
             console.log('T1 '+T1[i].nom_commune)
             
         } else {
             T2[i] = csvData[i];
+            if (isLess( i, i+1)) {
+                swap(i, i+1)
+            }
             console.log('T2 '+T2[i].nom_commune)
             
         }
