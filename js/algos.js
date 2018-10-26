@@ -56,16 +56,16 @@ function insertsort() {
 
         for (let j = i; j > 0; j--) {
 
-            if (isLess(j, j-1)) {
-                swap(j, j-1);
-               
-            } 
+            if (isLess(j, j - 1)) {
+                swap(j, j - 1);
+
+            }
         }
     }
 }
 
 function selectionsort() {
-    
+
     for (let i = 0; i < csvData.length - 1; i++) {
         // le tableau est trié de 0 à i-1
         // La boucle interne recherche le maximum  
@@ -79,13 +79,13 @@ function selectionsort() {
 }
 
 function bubblesort() {
-    
-    for (let i = 0; i < csvData.length - 1; i++) {
-        for (let j = 0; j < csvData.length - (i +1); j++) {
 
-            if (isLess(j+1, j)) {
+    for (let i = 0; i < csvData.length - 1; i++) {
+        for (let j = 0; j < csvData.length - (i + 1); j++) {
+
+            if (isLess(j + 1, j)) {
                 swap(j + 1, j)
-            } 
+            }
         }
     }
 }
@@ -103,29 +103,60 @@ function heapsort(data) {
 }
 
 function quicksort() {
-    let pivot = 8;
-    let T1 = [];
-    let T2 = [];
+    quicksortin(csvData, "random", 0, csvData.length -1);
+}
 
-    for (let i = 0; i < csvData.length; i++) {
-        if (isLess(i, pivot)) {
-           
-            T1[i] = csvData[i];
-            if (isLess( i, i+1)) {
-                swap(i, i+1)
+function quicksortin(aa, pivot_type, left, right) {
+    if (typeof (left) === "undefined") left = 0;
+    if (typeof (right) === "undefined") right = aa.length -1;
+
+    if (left >= right) return;
+
+    let pivot = partition(aa, pivot_type, left, right);
+    quicksortin(aa, pivot_type, left, pivot - 1);
+    quicksortin(aa, pivot_type, pivot + 1, right);
+}
+
+function partition(aa, pivot_type, left, right) {
+    let pivot = choose_pivot(aa, pivot_type, left, right);
+    // pour plus de simplicité on place le pivot en fin et quand le tri 
+    // est fini on le remet à sa place avec le swap(right, pivot)
+    swap(pivot, right);
+   
+    pivot = left;
+    for (let i = left; i < right; i++) {
+        if (isLess(i, right)) {
+            if (i !== pivot) {
+                swap(i, pivot)
             }
-            console.log('T1 '+T1[i].nom_commune)
-            
-        } else {
-            T2[i] = csvData[i];
-            if (isLess( i, i+1)) {
-                swap(i, i+1)
-            }
-            console.log('T2 '+T2[i].nom_commune)
-            
+            pivot += 1;
         }
     }
+    swap(right, pivot);
+
+    return pivot;
+}
+
+function choose_pivot(aa, pivot_type, left, right) {
+    if (typeof (left) === "undefined") left = 0;
+    if (typeof (right) === "undefined") right = aa.length -1;
     
+    let pivot = 0;
+
+    if (pivot_type === "random") {
+        pivot = Math.floor(Math.random()*(right - left) + left);
+    } else if (pivot_type === "first"){
+        pivot = left;
+    } else if (pivot_type === "last"){
+        pivot = right;
+    } else if (pivot_type === "middle"){
+        pivot = Math.round((left + right)/2);
+    } else if (pivot_type === "median"){
+        // TODO
+    } else {
+        throw 'invalid pivot_type' + pivot_type;
+    }
+    return pivot;
 }
 
 function quick3sort(data) {
