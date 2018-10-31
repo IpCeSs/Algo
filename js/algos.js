@@ -103,7 +103,7 @@ function heapsort(data) {
 }
 
 function quicksort() {
-    partion(csvData, "random", 0, csvData.length -1);
+    partition(csvData, "random", 0, csvData.length -1);
 }
 
 function quicksortin(aa, pivot_type, left, right) {
